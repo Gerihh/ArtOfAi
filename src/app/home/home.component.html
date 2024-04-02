@@ -1,0 +1,68 @@
+<div class="container">
+  <h1 class="text-center">Art of AI auction</h1>
+
+  <div class="col-8 offset-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4 my-4">
+      <label class="form-label">Category:</label>
+      <select class="form-select" [(ngModel)]="categoryId" (change)="selectCategory()">
+          <option selected value="">All category</option>
+          @for (category of categories; track $index) {
+            <option [value]="category.id">{{category.name}}</option>
+          }
+      </select>
+  </div>
+
+  <div class="row">
+    @for (painting of paintings; track $index) {
+      <div class="col-12 col-md-6 col-xl-4">
+          <div class="card w-100">
+              <img [src]="painting.imageUrl" class="card-img-top p-3">
+              <div class="card-body">
+                  <p class="card-text">
+                     {{painting.description}}
+                  </p>
+                  <hr>
+                  <p>
+                      Starting price: {{painting.startingPrice}},- Ft
+                  </p>
+                  <p>
+                      @if (painting.numberOfBids == 0) {
+                        Number of bids: 0
+                      }
+                      @else {
+                        Number of <span class="bids" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="showBids(painting.id)">bids</span>: {{painting.numberOfBids}}, highest bid: {{painting.maxBid}},- Ft
+                      }
+
+                  </p>
+              </div>
+              <div class="card-footer text-center">
+                  <a class="btn btn-primary" (click)="bid(painting.id, painting.imageUrl)">Bid</a>
+              </div>
+          </div>
+      </div>
+    }
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="exampleModalLabel">Bids</h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <table>
+      @for (bid of bids; track $index) {
+        <tr>
+          <td>{{bid.email}}</td>
+          <td>{{bid.price}}</td>
+      </tr>
+      }
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  </div>
+</div>
+</div>
+</div>
